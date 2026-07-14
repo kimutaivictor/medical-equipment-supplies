@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TopZen Healthcare Limited — Caring Today, Healing Tomorrow</title>
+<meta name="description" content="TopZen Healthcare Limited: your trusted online pharmacy for medicines, medical equipment, PPE, wellness products and more — delivered across Kenya.">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="site-header">
+  <div class="topbar">
+    <div class="container">
+      <div class="topbar-left">
+        <span data-icon="clock"></span>
+        <span>Mon–Sat: 7:00am – 9:00pm</span>
+        <span>+254 700 123 456</span>
+        <span>care@topzenhealthcare.co.ke</span>
+      </div>
+      <div class="topbar-right">
+        <span>Free delivery in Nairobi on orders over KSh 3,000</span>
+      </div>
+    </div>
+  </div>
+
+  <nav class="container navwrap">
+    <a href="index.html" class="brand">
+      <img src="assets/logo.png" alt="TopZen Healthcare Limited logo">
+      <div class="brand-text">
+        <strong><span class="top">Top</span><span class="zen">Zen</span></strong>
+        <small>Healthcare Limited</small>
+      </div>
+    </a>
+
+    <div class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+
+    <div class="nav-actions">
+      <form class="search-box" data-search-form>
+        <input type="text" placeholder="Search medicines, equipment...">
+        <button type="submit" aria-label="Search" data-icon="search"></button>
+      </form>
+      <a class="icon-btn" href="cart.html" aria-label="View cart">
+        <span data-icon="cart"></span>
+        <span class="cart-badge" data-cart-badge>0</span>
+      </a>
+      <button class="icon-btn mobile-toggle" aria-label="Open menu" data-icon="menu"></button>
+    </div>
+  </nav>
+</header>
+
+<div class="mobile-drawer">
+  <div class="mobile-drawer-panel">
+    <button class="icon-btn mobile-drawer-close" data-icon="x" aria-label="Close menu"></button>
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="cart.html">Cart</a>
+  </div>
+</div>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-copy">
+      <div class="eyebrow">Trusted online pharmacy · Kenya</div>
+      <h1>Caring today, <span class="hl">healing tomorrow</span> — delivered to your door.</h1>
+      <p class="lead">Genuine medicines, medical equipment, PPE and wellness products, dispensed with care and delivered fast across Nairobi and beyond.</p>
+      <div class="hero-cta">
+        <a href="shop.html" class="btn btn-primary">Shop Now →</a>
+        <a href="contact.html" class="btn btn-outline">Talk to a Pharmacist</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>12,000+</strong><span>Orders delivered</span></div>
+        <div><strong>800+</strong><span>Products in stock</span></div>
+        <div><strong>4.8/5</strong><span>Average rating</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card">
+        <img src="assets/logo.png" alt="TopZen Healthcare" style="max-width:280px;margin:0 auto;">
+      </div>
+      <div class="floating-chip chip-1">
+        <span class="chip-dot green" data-icon="shield"></span>
+        Licensed & Verified Pharmacy
+      </div>
+      <div class="floating-chip chip-2">
+        <span class="chip-dot blue" data-icon="truck"></span>
+        Same-day delivery in Nairobi
+      </div>
+    </div>
+  </div>
+</section>
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,32 C240,60 480,0 720,20 C960,40 1200,10 1440,30 L1440,60 L0,60 Z" fill="#ffffff"/></svg>
+</div>
+
+<!-- ================= CATEGORIES ================= -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow" style="justify-content:center;">Browse the pharmacy</div>
+      <h2>Shop by category</h2>
+      <p>Everything from everyday medicines to clinical-grade equipment, organised so you find what you need fast.</p>
+    </div>
+    <div class="cat-grid" id="categoryGrid"></div>
+  </div>
+</section>
+
+<!-- ================= FEATURED PRODUCTS ================= -->
+<section class="section section-tint">
+  <div class="container">
+    <div class="toolbar">
+      <div class="section-head left" style="margin:0;">
+        <div class="eyebrow">Handpicked for you</div>
+        <h2 style="margin:0;">Featured products</h2>
+      </div>
+      <a href="shop.html" class="btn btn-outline btn-sm">View all products →</a>
+    </div>
+    <div class="product-grid" id="featuredGrid"></div>
+  </div>
+</section>
+
+<!-- ================= TRUST STRIP ================= -->
+<section class="section">
+  <div class="container">
+    <div class="trust-strip">
+      <div class="trust-item">
+        <div class="trust-icon" data-icon="shield"></div>
+        <div><h4>Licensed Pharmacy</h4><p>Registered with the Pharmacy & Poisons Board of Kenya.</p></div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon" data-icon="truck"></div>
+        <div><h4>Fast, Reliable Delivery</h4><p>Same-day delivery in Nairobi, nationwide within 2–3 days.</p></div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon" data-icon="badge"></div>
+        <div><h4>100% Genuine Products</h4><p>Sourced directly from licensed manufacturers & distributors.</p></div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon" data-icon="headset"></div>
+        <div><h4>Pharmacist Support</h4><p>Speak to a qualified pharmacist for any product questions.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA BAND ================= -->
+<section class="section" style="padding-top:0;">
+  <div class="container">
+    <div class="cta-band">
+      <div>
+        <h3>Never run out of your essentials again</h3>
+        <p>Subscribe for restock reminders, wellness tips, and members-only offers.</p>
+      </div>
+      <form class="cta-form" data-newsletter-form>
+        <input type="email" required placeholder="Enter your email address">
+        <button class="btn btn-accent" type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TESTIMONIALS ================= -->
+<section class="section section-tint">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow" style="justify-content:center;">Customer stories</div>
+      <h2>Trusted by families across Kenya</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>"Ordered my mother's BP monitor in the evening and it arrived the next morning. The team even called to confirm the dosage instructions."</p>
+        <div class="testi-user"><div class="avatar">JN</div><div><strong>Joyce N.</strong><span>Nakuru</span></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>"Finally a pharmacy that verifies prescriptions properly instead of just shipping anything. Feels safe ordering antibiotics online."</p>
+        <div class="testi-user"><div class="avatar">DK</div><div><strong>David K.</strong><span>Nairobi</span></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★☆</div>
+        <p>"Good range of baby products and the delivery rider was very courteous. Will definitely reorder the feeding set."</p>
+        <div class="testi-user"><div class="avatar">AW</div><div><strong>Aisha W.</strong><span>Rongai</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <img src="assets/logo.png" alt="TopZen logo">
+          <strong>TopZen Healthcare</strong>
+        </div>
+        <p style="color:#8fa4bd;">Caring today, healing tomorrow. A licensed online pharmacy delivering genuine medicines, equipment and wellness products across Kenya.</p>
+        <div class="footer-socials">
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Instagram">ig</a>
+          <a href="#" aria-label="Twitter/X">x</a>
+        </div>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="shop.html">Shop</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="cart.html">Cart</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Categories</h4>
+        <ul id="footerCategories"></ul>
+      </div>
+      <div>
+        <h4>Get in Touch</h4>
+        <ul class="footer-contact">
+          <li><span data-icon="truck"></span> Nakuru & Nairobi, Kenya</li>
+          <li>📞 +254 700 123 456</li>
+          <li>✉️ care@topzenhealthcare.co.ke</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 TopZen Healthcare Limited. All rights reserved.</span>
+      <span>Prices in KSh · Regulated by the Pharmacy & Poisons Board</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+  document.getElementById("categoryGrid").innerHTML = TZ_CATEGORIES.map(renderCategoryCard).join("");
+  document.getElementById("footerCategories").innerHTML = TZ_CATEGORIES.map(c => `<li><a href="shop.html?cat=${c.id}">${c.name}</a></li>`).join("");
+  const featured = [...TZ_PRODUCTS].sort((a,b) => b.rating - a.rating).slice(0,8);
+  document.getElementById("featuredGrid").innerHTML = featured.map(renderProductCard).join("");
+  tzInjectIcons();
+</script>
+</body>
+</html>

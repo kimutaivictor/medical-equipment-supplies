@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop All Products — TopZen Healthcare Limited</title>
+<meta name="description" content="Browse medicines, medical equipment, PPE, wellness products and more at TopZen Healthcare Limited.">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="topbar">
+    <div class="container">
+      <div class="topbar-left">
+        <span data-icon="clock"></span>
+        <span>Mon–Sat: 7:00am – 9:00pm</span>
+        <span>+254 700 123 456</span>
+        <span>care@topzenhealthcare.co.ke</span>
+      </div>
+      <div class="topbar-right"><span>Free delivery in Nairobi on orders over KSh 3,000</span></div>
+    </div>
+  </div>
+  <nav class="container navwrap">
+    <a href="index.html" class="brand">
+      <img src="assets/logo.png" alt="TopZen Healthcare Limited logo">
+      <div class="brand-text"><strong><span class="top">Top</span><span class="zen">Zen</span></strong><small>Healthcare Limited</small></div>
+    </a>
+    <div class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <form class="search-box" data-search-form>
+        <input type="text" id="headerSearchInput" placeholder="Search medicines, equipment...">
+        <button type="submit" aria-label="Search" data-icon="search"></button>
+      </form>
+      <a class="icon-btn" href="cart.html" aria-label="View cart"><span data-icon="cart"></span><span class="cart-badge" data-cart-badge>0</span></a>
+      <button class="icon-btn mobile-toggle" aria-label="Open menu" data-icon="menu"></button>
+    </div>
+  </nav>
+</header>
+
+<div class="mobile-drawer">
+  <div class="mobile-drawer-panel">
+    <button class="icon-btn mobile-drawer-close" data-icon="x" aria-label="Close menu"></button>
+    <a href="index.html">Home</a><a href="shop.html">Shop</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="cart.html">Cart</a>
+  </div>
+</div>
+
+<div class="page-head">
+  <div class="container">
+    <h1 style="font-size:28px;margin-bottom:4px;">Shop All Products</h1>
+    <div class="breadcrumb"><a href="index.html">Home</a> / <span id="crumbLabel">Shop</span></div>
+  </div>
+</div>
+
+<section class="section" style="padding-top:36px;">
+  <div class="container">
+    <div class="toolbar">
+      <div class="chip-row" id="filterChips"></div>
+      <select class="sort-select" id="sortSelect">
+        <option value="relevance">Sort: Relevance</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="rating">Highest Rated</option>
+        <option value="name">Name: A–Z</option>
+      </select>
+    </div>
+    <p id="resultsCount" style="font-size:13.5px;color:var(--neutral);margin-bottom:20px;"></p>
+    <div class="product-grid" id="shopGrid"></div>
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <div class="cat-icon" data-icon="search" style="margin:0 auto 20px;"></div>
+      <h3>No products found</h3>
+      <p>Try a different search term or clear your filters.</p>
+      <a href="shop.html" class="btn btn-outline">Clear filters</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand"><img src="assets/logo.png" alt="TopZen logo"><strong>TopZen Healthcare</strong></div>
+        <p style="color:#8fa4bd;">Caring today, healing tomorrow. A licensed online pharmacy delivering genuine medicines, equipment and wellness products across Kenya.</p>
+        <div class="footer-socials"><a href="#">f</a><a href="#">ig</a><a href="#">x</a></div>
+      </div>
+      <div><h4>Quick Links</h4><ul>
+        <li><a href="index.html">Home</a></li><li><a href="shop.html">Shop</a></li>
+        <li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li><li><a href="cart.html">Cart</a></li>
+      </ul></div>
+      <div><h4>Categories</h4><ul id="footerCategories"></ul></div>
+      <div><h4>Get in Touch</h4><ul class="footer-contact">
+        <li><span data-icon="truck"></span> Nakuru & Nairobi, Kenya</li>
+        <li>📞 +254 700 123 456</li><li>✉️ care@topzenhealthcare.co.ke</li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 TopZen Healthcare Limited. All rights reserved.</span>
+      <span>Prices in KSh · Regulated by the Pharmacy & Poisons Board</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.getElementById("footerCategories").innerHTML = TZ_CATEGORIES.map(c => `<li><a href="shop.html?cat=${c.id}">${c.name}</a></li>`).join("");
+
+const params = new URLSearchParams(location.search);
+let activeCat = params.get("cat") || "all";
+let activeQuery = (params.get("q") || "").toLowerCase();
+if(document.getElementById("headerSearchInput")) document.getElementById("headerSearchInput").value = params.get("q") || "";
+
+function buildChips(){
+  const chips = [{id:"all", name:"All Products"}, ...TZ_CATEGORIES];
+  document.getElementById("filterChips").innerHTML = chips.map(c =>
+    `<button class="filter-chip ${activeCat===c.id?'active':''}" data-cat="${c.id}">${c.name}</button>`
+  ).join("");
+  document.querySelectorAll(".filter-chip").forEach(btn => {
+    btn.addEventListener("click", () => {
+      activeCat = btn.getAttribute("data-cat");
+      buildChips();
+      renderGrid();
+    });
+  });
+}
+
+function renderGrid(){
+  let list = TZ_PRODUCTS.filter(p => activeCat === "all" || p.category === activeCat);
+  if(activeQuery){
+    list = list.filter(p =>
+      p.name.toLowerCase().includes(activeQuery) ||
+      p.short.toLowerCase().includes(activeQuery) ||
+      p.category.toLowerCase().includes(activeQuery) ||
+      p.brand.toLowerCase().includes(activeQuery)
+    );
+  }
+  const sort = document.getElementById("sortSelect").value;
+  if(sort === "price-asc") list.sort((a,b) => a.price - b.price);
+  else if(sort === "price-desc") list.sort((a,b) => b.price - a.price);
+  else if(sort === "rating") list.sort((a,b) => b.rating - a.rating);
+  else if(sort === "name") list.sort((a,b) => a.name.localeCompare(b.name));
+
+  const grid = document.getElementById("shopGrid");
+  const empty = document.getElementById("emptyState");
+  document.getElementById("resultsCount").textContent = `Showing ${list.length} of ${TZ_PRODUCTS.length} products`;
+  document.getElementById("crumbLabel").textContent = activeCat === "all" ? "Shop" : (TZ.getCategory(activeCat)?.name || "Shop");
+
+  if(list.length === 0){
+    grid.style.display = "none"; empty.style.display = "block";
+  }else{
+    grid.style.display = "grid"; empty.style.display = "none";
+    grid.innerHTML = list.map(renderProductCard).join("");
+  }
+  tzInjectIcons();
+}
+
+document.getElementById("sortSelect").addEventListener("change", renderGrid);
+buildChips();
+renderGrid();
+</script>
+</body>
+</html>

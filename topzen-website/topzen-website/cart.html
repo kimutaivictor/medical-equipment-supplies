@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Cart — TopZen Healthcare Limited</title>
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="topbar"><div class="container">
+    <div class="topbar-left"><span data-icon="clock"></span><span>Mon–Sat: 7:00am – 9:00pm</span><span>+254 700 123 456</span><span>care@topzenhealthcare.co.ke</span></div>
+    <div class="topbar-right"><span>Free delivery in Nairobi on orders over KSh 3,000</span></div>
+  </div></div>
+  <nav class="container navwrap">
+    <a href="index.html" class="brand">
+      <img src="assets/logo.png" alt="TopZen Healthcare Limited logo">
+      <div class="brand-text"><strong><span class="top">Top</span><span class="zen">Zen</span></strong><small>Healthcare Limited</small></div>
+    </a>
+    <div class="main-nav"><a href="index.html">Home</a><a href="shop.html">Shop</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+    <div class="nav-actions">
+      <form class="search-box" data-search-form><input type="text" placeholder="Search medicines, equipment..."><button type="submit" aria-label="Search" data-icon="search"></button></form>
+      <a class="icon-btn" href="cart.html" aria-label="View cart"><span data-icon="cart"></span><span class="cart-badge" data-cart-badge>0</span></a>
+      <button class="icon-btn mobile-toggle" aria-label="Open menu" data-icon="menu"></button>
+    </div>
+  </nav>
+</header>
+<div class="mobile-drawer"><div class="mobile-drawer-panel">
+  <button class="icon-btn mobile-drawer-close" data-icon="x" aria-label="Close menu"></button>
+  <a href="index.html">Home</a><a href="shop.html">Shop</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="cart.html">Cart</a>
+</div></div>
+
+<div class="page-head"><div class="container">
+  <h1 style="font-size:28px;margin-bottom:4px;">Your Cart</h1>
+  <div class="breadcrumb"><a href="index.html">Home</a> / <span>Cart</span></div>
+</div></div>
+
+<section class="section" id="cartSection"></section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="footer-brand"><img src="assets/logo.png" alt="TopZen logo"><strong>TopZen Healthcare</strong></div>
+        <p style="color:#8fa4bd;">Caring today, healing tomorrow. A licensed online pharmacy delivering genuine medicines, equipment and wellness products across Kenya.</p>
+        <div class="footer-socials"><a href="#">f</a><a href="#">ig</a><a href="#">x</a></div></div>
+      <div><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="shop.html">Shop</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li><li><a href="cart.html">Cart</a></li></ul></div>
+      <div><h4>Categories</h4><ul id="footerCategories"></ul></div>
+      <div><h4>Get in Touch</h4><ul class="footer-contact"><li><span data-icon="truck"></span> Nakuru & Nairobi, Kenya</li><li>📞 +254 700 123 456</li><li>✉️ care@topzenhealthcare.co.ke</li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 TopZen Healthcare Limited. All rights reserved.</span><span>Prices in KSh · Regulated by the Pharmacy & Poisons Board</span></div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.getElementById("footerCategories").innerHTML = TZ_CATEGORIES.map(c => `<li><a href="shop.html?cat=${c.id}">${c.name}</a></li>`).join("");
+const DELIVERY_FEE = 300;
+const FREE_DELIVERY_THRESHOLD = 3000;
+
+function renderCart(){
+  const items = Cart.lineItems();
+  const section = document.getElementById("cartSection");
+
+  if(items.length === 0){
+    section.innerHTML = `
+    <div class="container">
+      <div class="empty-state">
+        <div class="cat-icon" data-icon="cart" style="margin:0 auto 20px;"></div>
+        <h3>Your cart is empty</h3>
+        <p>Looks like you haven't added anything yet. Let's fix that.</p>
+        <a href="shop.html" class="btn btn-primary">Browse Products</a>
+      </div>
+    </div>`;
+    tzInjectIcons();
+    return;
+  }
+
+  const subtotal = Cart.subtotal();
+  const delivery = subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
+  const total = subtotal + delivery;
+
+  section.innerHTML = `
+  <div class="container cart-layout">
+    <div>
+      <table class="cart-table">
+        <thead><tr><th>Product</th><th>Price</th><th>Quantity</th><th>Subtotal</th><th></th></tr></thead>
+        <tbody id="cartRows"></tbody>
+      </table>
+      <div style="margin-top:20px;">
+        <a href="shop.html" class="btn btn-outline btn-sm">← Continue Shopping</a>
+      </div>
+    </div>
+    <div class="summary-card">
+      <h3 style="font-size:17px;">Order Summary</h3>
+      <div class="summary-row"><span>Subtotal</span><span>${TZ.money(subtotal)}</span></div>
+      <div class="summary-row"><span>Delivery</span><span>${delivery === 0 ? "Free" : TZ.money(delivery)}</span></div>
+      ${delivery > 0 ? `<p style="font-size:12px;color:var(--leaf);margin-top:-6px;">Add ${TZ.money(FREE_DELIVERY_THRESHOLD - subtotal)} more for free delivery!</p>` : ""}
+      <div class="promo-row">
+        <input type="text" placeholder="Promo code">
+        <button class="btn btn-outline btn-sm" id="promoBtn">Apply</button>
+      </div>
+      <div class="summary-row total"><span>Total</span><span>${TZ.money(total)}</span></div>
+      <a href="checkout.html" class="btn btn-primary btn-block">Proceed to Checkout →</a>
+    </div>
+  </div>`;
+
+  document.getElementById("cartRows").innerHTML = items.map(({product, qty}) => `
+    <tr data-row="${product.id}">
+      <td><div class="cart-item-info">
+        <img src="" alt="" style="display:none;">
+        <div style="color:var(--secondary);">${TZ_ICONS[TZ.getCategory(product.category).icon]}</div>
+        <div><strong>${product.name}</strong><small>${product.brand} · ${product.sku}</small></div>
+      </div></td>
+      <td>${TZ.money(product.price)}</td>
+      <td><div class="qty-control">
+        <button type="button" data-decr="${product.id}">−</button>
+        <span>${qty}</span>
+        <button type="button" data-incr="${product.id}">+</button>
+      </div></td>
+      <td><strong>${TZ.money(product.price * qty)}</strong></td>
+      <td><a href="#" class="remove-link" data-remove="${product.id}">Remove</a></td>
+    </tr>
+  `).join("");
+
+  tzInjectIcons();
+
+  document.getElementById("promoBtn").addEventListener("click", () => tzToast("Promo codes aren't set up in this demo yet."));
+}
+
+document.addEventListener("click", (e) => {
+  const incr = e.target.closest("[data-incr]");
+  const decr = e.target.closest("[data-decr]");
+  const remove = e.target.closest("[data-remove]");
+  if(incr){ const id = incr.getAttribute("data-incr"); const cur = Cart.read()[id] || 0; Cart.setQty(id, cur+1); renderCart(); }
+  if(decr){ const id = decr.getAttribute("data-decr"); const cur = Cart.read()[id] || 0; Cart.setQty(id, cur-1); renderCart(); }
+  if(remove){ e.preventDefault(); Cart.remove(remove.getAttribute("data-remove")); renderCart(); tzToast("Item removed from cart"); }
+});
+
+renderCart();
+</script>
+</body>
+</html>

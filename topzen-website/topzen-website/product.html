@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">Product — TopZen Healthcare Limited</title>
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="topbar"><div class="container">
+    <div class="topbar-left"><span data-icon="clock"></span><span>Mon–Sat: 7:00am – 9:00pm</span><span>+254 700 123 456</span><span>care@topzenhealthcare.co.ke</span></div>
+    <div class="topbar-right"><span>Free delivery in Nairobi on orders over KSh 3,000</span></div>
+  </div></div>
+  <nav class="container navwrap">
+    <a href="index.html" class="brand">
+      <img src="assets/logo.png" alt="TopZen Healthcare Limited logo">
+      <div class="brand-text"><strong><span class="top">Top</span><span class="zen">Zen</span></strong><small>Healthcare Limited</small></div>
+    </a>
+    <div class="main-nav"><a href="index.html">Home</a><a href="shop.html">Shop</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+    <div class="nav-actions">
+      <form class="search-box" data-search-form><input type="text" placeholder="Search medicines, equipment..."><button type="submit" aria-label="Search" data-icon="search"></button></form>
+      <a class="icon-btn" href="cart.html" aria-label="View cart"><span data-icon="cart"></span><span class="cart-badge" data-cart-badge>0</span></a>
+      <button class="icon-btn mobile-toggle" aria-label="Open menu" data-icon="menu"></button>
+    </div>
+  </nav>
+</header>
+<div class="mobile-drawer"><div class="mobile-drawer-panel">
+  <button class="icon-btn mobile-drawer-close" data-icon="x" aria-label="Close menu"></button>
+  <a href="index.html">Home</a><a href="shop.html">Shop</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="cart.html">Cart</a>
+</div></div>
+
+<div class="page-head">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a> / <a href="shop.html">Shop</a> / <span id="crumbCat"></span> / <span id="crumbName"></span></div>
+  </div>
+</div>
+
+<section class="section" id="productSection" style="padding-top:36px;"></section>
+
+<section class="section section-tint">
+  <div class="container">
+    <div class="section-head left"><div class="eyebrow">You might also like</div><h2 style="margin:0;">Related products</h2></div>
+    <div class="product-grid" id="relatedGrid"></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="footer-brand"><img src="assets/logo.png" alt="TopZen logo"><strong>TopZen Healthcare</strong></div>
+        <p style="color:#8fa4bd;">Caring today, healing tomorrow. A licensed online pharmacy delivering genuine medicines, equipment and wellness products across Kenya.</p>
+        <div class="footer-socials"><a href="#">f</a><a href="#">ig</a><a href="#">x</a></div></div>
+      <div><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="shop.html">Shop</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li><li><a href="cart.html">Cart</a></li></ul></div>
+      <div><h4>Categories</h4><ul id="footerCategories"></ul></div>
+      <div><h4>Get in Touch</h4><ul class="footer-contact"><li><span data-icon="truck"></span> Nakuru & Nairobi, Kenya</li><li>📞 +254 700 123 456</li><li>✉️ care@topzenhealthcare.co.ke</li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 TopZen Healthcare Limited. All rights reserved.</span><span>Prices in KSh · Regulated by the Pharmacy & Poisons Board</span></div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.getElementById("footerCategories").innerHTML = TZ_CATEGORIES.map(c => `<li><a href="shop.html?cat=${c.id}">${c.name}</a></li>`).join("");
+
+const params = new URLSearchParams(location.search);
+const id = params.get("id") || TZ_PRODUCTS[0].id;
+const p = TZ.getProduct(id) || TZ_PRODUCTS[0];
+const cat = TZ.getCategory(p.category);
+const stock = TZ.stockLabel(p.stock);
+
+document.title = `${p.name} — TopZen Healthcare Limited`;
+document.getElementById("crumbCat").innerHTML = `<a href="shop.html?cat=${p.category}">${cat.name}</a>`;
+document.getElementById("crumbName").textContent = p.name;
+
+document.getElementById("productSection").innerHTML = `
+<div class="container pd-layout">
+    <div class="pd-gallery-main">
+    <img src="${p.image || 'assets/placeholder.jpg'}" alt="${p.name}">
+    </div>
+    <div class="pd-thumbs">
+      <div class="active">
+        <img src="${p.image || 'assets/placeholder.jpg'}" alt="${p.name}">
+      </div>
+    </div>
+  </div>
+  <div data-product-block>
+    <span class="product-cat">${cat.name} · ${p.brand}</span>
+    <h1 class="pd-title">${p.name}</h1>
+    <div class="pd-meta-row">
+      <div class="stars">${TZ.stars(p.rating)} <span>${p.rating} (${p.reviews} reviews)</span></div>
+      <span class="stock ${stock.cls}">${stock.text}</span>
+      ${p.rx ? `<span class="badge rx" style="position:static;">Prescription Required</span>` : ""}
+    </div>
+    <p>${p.short}</p>
+    <div class="pd-price-row">
+      <span class="price">${TZ.money(p.price)}</span>
+      ${p.oldPrice ? `<span class="price-old">${TZ.money(p.oldPrice)}</span>` : ""}
+      <span style="font-size:12px;color:var(--neutral);">SKU: ${p.sku}</span>
+    </div>
+    <div class="qty-buy-row">
+      <div class="qty-control">
+        <button type="button" id="qtyMinus">−</button>
+        <span id="qtyDisplay">1</span>
+        <button type="button" id="qtyPlus">+</button>
+      </div>
+      <input type="hidden" data-qty-input value="1">
+      <button class="btn btn-primary" data-add-to-cart="${p.id}" ${p.stock<=0 ? "disabled":""} style="flex:1;">
+        <span data-icon="cart"></span> ${p.stock<=0 ? "Notify me when back" : "Add to cart"}
+      </button>
+      <button class="icon-btn" data-wishlist="${p.id}" aria-label="Save to wishlist" data-icon="heart"></button>
+    </div>
+    ${p.rx ? `<p style="font-size:12.5px;background:var(--bg-tint);border:1px solid var(--border);padding:10px 14px;border-radius:10px;">⚠ This is a prescription-only medicine. You'll be asked to upload a valid prescription at checkout, and our pharmacist will verify it before dispatch.</p>` : ""}
+
+    <div class="pd-tabs">
+      <div class="pd-tab active" data-tab="desc">Description</div>
+      <div class="pd-tab" data-tab="features">Key Features</div>
+      <div class="pd-tab" data-tab="shipping">Shipping & Returns</div>
+    </div>
+    <div id="tabDesc"><p>${p.description}</p></div>
+    <div id="tabFeatures" style="display:none;"><ul class="pd-feature-list">
+      ${p.features.map(f => `<li><span data-icon="badge" style="width:16px;height:16px;"></span>${f}</li>`).join("")}
+    </ul></div>
+    <div id="tabShipping" style="display:none;">
+      <ul class="pd-feature-list">
+        <li><span data-icon="truck"></span> Same-day delivery within Nairobi for orders placed before 2:00pm.</li>
+        <li><span data-icon="shield"></span> 2–3 business days for delivery countrywide.</li>
+        <li><span data-icon="badge"></span> Unopened items can be returned within 7 days with a valid receipt.</li>
+      </ul>
+    </div>
+  </div>
+</div>`;
+
+let qty = 1;
+const qtyDisplay = document.getElementById("qtyDisplay");
+const qtyHidden = document.querySelector("[data-qty-input]");
+document.getElementById("qtyPlus").addEventListener("click", () => { qty = Math.min(qty+1, p.stock || 99); qtyDisplay.textContent = qty; qtyHidden.value = qty; });
+document.getElementById("qtyMinus").addEventListener("click", () => { qty = Math.max(1, qty-1); qtyDisplay.textContent = qty; qtyHidden.value = qty; });
+
+document.querySelectorAll(".pd-tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".pd-tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    ["desc","features","shipping"].forEach(k => {
+      document.getElementById("tab" + k[0].toUpperCase()+k.slice(1)).style.display = (k === tab.getAttribute("data-tab")) ? "block" : "none";
+    });
+  });
+});
+
+const related = TZ_PRODUCTS.filter(x => x.category === p.category && x.id !== p.id).slice(0,4);
+document.getElementById("relatedGrid").innerHTML = (related.length ? related : TZ_PRODUCTS.filter(x=>x.id!==p.id).slice(0,4)).map(renderProductCard).join("");
+tzInjectIcons();
+</script>
+</body>
+</html>

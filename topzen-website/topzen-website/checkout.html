@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — TopZen Healthcare Limited</title>
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="topbar"><div class="container">
+    <div class="topbar-left"><span data-icon="clock"></span><span>Mon–Sat: 7:00am – 9:00pm</span><span>+254 700 123 456</span><span>care@topzenhealthcare.co.ke</span></div>
+    <div class="topbar-right"><span>Free delivery in Nairobi on orders over KSh 3,000</span></div>
+  </div></div>
+  <nav class="container navwrap">
+    <a href="index.html" class="brand">
+      <img src="assets/logo.png" alt="TopZen Healthcare Limited logo">
+      <div class="brand-text"><strong><span class="top">Top</span><span class="zen">Zen</span></strong><small>Healthcare Limited</small></div>
+    </a>
+    <div class="main-nav"><a href="index.html">Home</a><a href="shop.html">Shop</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+    <div class="nav-actions">
+      <a class="icon-btn" href="cart.html" aria-label="View cart"><span data-icon="cart"></span><span class="cart-badge" data-cart-badge>0</span></a>
+      <button class="icon-btn mobile-toggle" aria-label="Open menu" data-icon="menu"></button>
+    </div>
+  </nav>
+</header>
+<div class="mobile-drawer"><div class="mobile-drawer-panel">
+  <button class="icon-btn mobile-drawer-close" data-icon="x" aria-label="Close menu"></button>
+  <a href="index.html">Home</a><a href="shop.html">Shop</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="cart.html">Cart</a>
+</div></div>
+
+<div class="page-head"><div class="container">
+  <h1 style="font-size:28px;margin-bottom:4px;">Checkout</h1>
+  <div class="breadcrumb"><a href="index.html">Home</a> / <a href="cart.html">Cart</a> / <span>Checkout</span></div>
+</div></div>
+
+<section class="section" id="checkoutSection"></section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;padding-top:0;">
+      <span>© 2026 TopZen Healthcare Limited. All rights reserved.</span>
+      <span>Prices in KSh · Regulated by the Pharmacy & Poisons Board</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+const DELIVERY_FEE = 300;
+const FREE_DELIVERY_THRESHOLD = 3000;
+const section = document.getElementById("checkoutSection");
+
+function renderCheckout(){
+  const items = Cart.lineItems();
+  if(items.length === 0){
+    section.innerHTML = `<div class="container"><div class="empty-state">
+      <div class="cat-icon" data-icon="cart" style="margin:0 auto 20px;"></div>
+      <h3>Your cart is empty</h3>
+      <p>Add a few products before checking out.</p>
+      <a href="shop.html" class="btn btn-primary">Browse Products</a>
+    </div></div>`;
+    tzInjectIcons();
+    return;
+  }
+
+  const subtotal = Cart.subtotal();
+  const delivery = subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
+  const total = subtotal + delivery;
+  const needsRx = items.some(li => li.product.rx);
+
+  section.innerHTML = `
+  <div class="container checkout-layout">
+    <div class="form-card">
+      <h3 style="font-size:18px;">Delivery Details</h3>
+      <form id="checkoutForm">
+        <div class="form-grid">
+          <div class="form-group"><label>Full Name</label><input type="text" required placeholder="Jane Wanjiru"></div>
+          <div class="form-group"><label>Phone Number</label><input type="tel" required placeholder="+254 7XX XXX XXX"></div>
+          <div class="form-group full"><label>Email Address</label><input type="email" required placeholder="you@example.com"></div>
+          <div class="form-group full"><label>Delivery Address</label><input type="text" required placeholder="Street, estate, house/apartment no."></div>
+          <div class="form-group"><label>Town / City</label><input type="text" required placeholder="Nairobi"></div>
+          <div class="form-group"><label>Area / Estate</label><input type="text" placeholder="e.g. Ongata Rongai"></div>
+          ${needsRx ? `<div class="form-group full"><label>Prescription Upload (required for Rx items)</label><input type="file" accept="image/*,.pdf"></div>` : ""}
+          <div class="form-group full"><label>Order Notes (optional)</label><textarea rows="2" placeholder="Delivery instructions, allergies to note, etc."></textarea></div>
+        </div>
+
+        <h3 style="font-size:18px;margin-top:8px;">Payment Method</h3>
+        <div class="pay-options">
+          <label class="pay-option selected" data-pay="mpesa"><input type="radio" name="pay" checked> M-Pesa</label>
+          <label class="pay-option" data-pay="card"><input type="radio" name="pay"> Card</label>
+          <label class="pay-option" data-pay="cod"><input type="radio" name="pay"> Cash on Delivery</label>
+        </div>
+        <div id="mpesaField" class="form-group"><label>M-Pesa Phone Number</label><input type="tel" placeholder="07XX XXX XXX"></div>
+
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top:10px;">Place Order — ${TZ.money(total)}</button>
+      </form>
+    </div>
+
+    <div class="summary-card">
+      <h3 style="font-size:17px;">Order Summary</h3>
+      ${items.map(({product, qty}) => `
+        <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:10px;">
+          <span>${product.name} <span style="color:var(--neutral);">× ${qty}</span></span>
+          <strong>${TZ.money(product.price * qty)}</strong>
+        </div>`).join("")}
+      <div class="summary-row" style="border-top:1px solid var(--border);padding-top:14px;margin-top:6px;"><span>Subtotal</span><span>${TZ.money(subtotal)}</span></div>
+      <div class="summary-row"><span>Delivery</span><span>${delivery === 0 ? "Free" : TZ.money(delivery)}</span></div>
+      <div class="summary-row total"><span>Total</span><span>${TZ.money(total)}</span></div>
+      ${needsRx ? `<p style="font-size:12px;background:var(--bg-tint);padding:10px;border-radius:8px;">⚠ Your order includes a prescription item. Our pharmacist will verify your upload before dispatch.</p>` : ""}
+    </div>
+  </div>`;
+
+  document.querySelectorAll(".pay-option").forEach(opt => {
+    opt.addEventListener("click", () => {
+      document.querySelectorAll(".pay-option").forEach(o => o.classList.remove("selected"));
+      opt.classList.add("selected");
+      opt.querySelector("input").checked = true;
+      document.getElementById("mpesaField").style.display = opt.getAttribute("data-pay") === "mpesa" ? "block" : "none";
+    });
+  });
+
+  document.getElementById("checkoutForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const orderNo = "TZ" + Math.floor(100000 + Math.random()*900000);
+    section.innerHTML = `
+    <div class="container">
+      <div class="empty-state">
+        <div class="cat-icon" data-icon="shield" style="margin:0 auto 20px;background:var(--bg-tint-green);color:var(--leaf);"></div>
+        <h3>Order placed successfully! 🎉</h3>
+        <p>Your order <strong>#${orderNo}</strong> has been received. A confirmation has been sent to your email, and our pharmacist will reach out shortly if any prescription needs verifying.</p>
+        <a href="index.html" class="btn btn-primary">Back to Home</a>
+        <a href="shop.html" class="btn btn-outline" style="margin-left:10px;">Continue Shopping</a>
+      </div>
+    </div>`;
+    Cart.clear();
+    tzInjectIcons();
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+}
+
+renderCheckout();
+</script>
+</body>
+</html>
